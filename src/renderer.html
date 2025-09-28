@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pater</title>
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 24px; }
+      .row { display:flex; gap:8px; align-items:center; }
+      input[type="text"] { flex:1; padding:8px; font-size:14px; }
+      button { padding:8px 12px; font-size:14px; }
+      #status { margin-top:12px; color:#555; }
+    </style>
+  </head>
+  <body>
+    <h2>Pater - Agent POC</h2>
+    <div class="row">
+      <input id="message" type="text" placeholder="Message pour la toast..." />
+      <button id="btn-toast">Toast Direct</button>
+      <button id="btn-agent">Toast via Agent</button>
+    </div>
+    <div id="status"></div>
+    <script type="module" src="./renderer.js"></script>
+  </body>
+  </html>
