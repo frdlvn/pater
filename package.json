@@ -5,7 +5,9 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "dev": "electron .",
+    "dev:renderer": "vite --config vite.dev.config.js",
+    "dev:main": "nodemon --watch src --ext js,html --exec electron .",
+    "dev": "concurrently -k \"npm:dev:*\"",
     "test": "vitest run --config vite.config.js \"test/**/*.test.js\"",
     "build:win": "electron-builder --win --publish=never",
     "build": "electron-builder"
@@ -34,10 +36,14 @@
   "devDependencies": {
     "electron": "^28.3.3",
     "electron-builder": "^26.0.12",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.0.1",
+    "vite": "^5.4.8"
   },
   "dependencies": {
     "@langchain/langgraph": "^0.4.9",
+    "@langchain/core": ">=0.3.58 <0.4.0",
     "electron-store": "^9.0.0",
     "node-cron": "^3.0.3"
   }

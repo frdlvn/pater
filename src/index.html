@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pater</title>
+    <style>
+      :root {
+        --bg: #0e1116;
+        --surface: #0f141a;
+        --elevated: #111821;
+        --border: #1b2330;
+        --muted: #9aa4b2;
+        --text: #e6edf3;
+        --accent: #7aa2f7;
+        --accent-600: #688fe6;
+        --ring: rgba(122,162,247,.35);
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji'; margin: 0; background: var(--bg); color: var(--text); }
+      .header { height: 44px; display: flex; align-items: center; padding: 0 14px; border-bottom: 1px solid var(--border); -webkit-app-region: drag; color: var(--muted); font-weight: 600; letter-spacing: .2px; position: relative; }
+      .container { max-width: 880px; margin: 18px auto; padding: 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,.35); }
+      h2 { margin: 0 0 10px; font-weight: 650; letter-spacing: .2px; }
+      p.sub { margin: 0 0 16px; color: var(--muted); }
+      .row { display:flex; gap:10px; align-items:center; }
+      input[type="text"] { flex:1; padding:12px 14px; font-size:14px; border-radius: 8px; background: #0b1118; color: var(--text); border: 1px solid #1f2633; outline: none; transition: box-shadow .15s ease, border-color .15s ease; }
+      input[type="text"]::placeholder { color: #6b7480; }
+      input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--ring); }
+      button { padding:10px 12px; font-size:13px; color:#0b1020; background: var(--accent); border: none; border-radius: 8px; cursor: pointer; font-weight: 650; letter-spacing: .2px; transition: background .15s ease, transform .03s ease; -webkit-app-region: no-drag; }
+      button.secondary { background: #1a2230; color: var(--text); border: none; }
+      button:hover { background: var(--accent-600); }
+      button.secondary:hover { background: #202a3b; }
+      button:active { transform: translateY(1px); }
+      #status { margin-top:12px; color: var(--muted); }
+      #toast { position: fixed; right: 16px; bottom: 16px; background: var(--elevated); border: 1px solid var(--border); color: var(--text); padding: 12px 16px; border-radius: 10px; opacity: 0; transform: translateY(20px); transition: all .2s ease; box-shadow: 0 10px 22px rgba(0,0,0,.4); }
+      #toast.show { opacity: 1; transform: translateY(0); }
+      .win-controls { display:flex; gap:6px; position: relative; z-index: 10; -webkit-app-region: no-drag; pointer-events: auto; }
+      .win-controls button { width:32px; padding:6px 0; text-align:center; }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div style="flex:1">Pater</div>
+      <div class="win-controls" style="display:none; gap:6px; -webkit-app-region: no-drag;">
+        <button id="win-min" class="secondary" title="Minimize">—</button>
+        <button id="win-max" class="secondary" title="Maximize">▢</button>
+        <button id="win-close" class="secondary" title="Close" style="color:#ffd1d1;">×</button>
+      </div>
+    </div>
+    <div class="container">
+      <h2>Pater — Agent POC</h2>
+      <p class="sub">Quick check-in notifier with LangGraph demo</p>
+      <div class="row">
+        <input id="message" type="text" placeholder="Message pour la toast..." />
+        <button id="btn-toast">Toast</button>
+        <button id="btn-agent" class="secondary">Agent</button>
+      </div>
+      <div id="status"></div>
+    </div>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="./renderer.js"></script>
+  </body>
+  </html>
+
+

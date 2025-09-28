@@ -13,6 +13,7 @@ const __dirname = path.dirname(__filename)
 
 const APP_ID = 'com.pater.app'
 let tray
+let mainWindow
 const store = new Store({
   defaults: {
     quiet: { from: '22:00', to: '08:00' },
@@ -22,9 +23,17 @@ const store = new Store({
 })
 
 function createWindow () {
+  const isWin = process.platform === 'win32'
+  const isMac = process.platform === 'darwin'
+  const isLinux = process.platform === 'linux'
   const win = new BrowserWindow({
     width: 900,
     height: 650,
+    backgroundColor: '#0b1020',
+    autoHideMenuBar: true,
+    titleBarStyle: isWin ? 'hidden' : (isMac ? 'hiddenInset' : 'hidden'),
+    titleBarOverlay: isWin ? { color: '#0b1020', symbolColor: '#e6e9f5', height: 44 } : undefined,
+    frame: isLinux ? false : undefined,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -32,8 +41,15 @@ function createWindow () {
     }
   })
 
-  const indexPath = path.join(__dirname, 'renderer.html')
-  win.loadFile(indexPath)
+  mainWindow = win
+
+  const isDev = process.env.ELECTRON_DEV === 'true' || process.env.NODE_ENV === 'development'
+  if (isDev) {
+    win.loadURL('http://127.0.0.1:5173')
+  } else {
+    const indexPath = path.join(__dirname, 'index.html')
+    win.loadFile(indexPath)
+  }
 }
 
 app.setAppUserModelId(APP_ID)
@@ -57,8 +73,8 @@ app.whenReady().then(() => {
   setTimeout(() => showDailyCheck(), 5000)
 })
 
-app.on('window-all-closed', (e) => {
-  e.preventDefault()
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') app.quit()
 })
 
 function showToast (title, body) {
@@ -136,6 +152,26 @@ ipcMain.handle('agent:run-once', async (_event, payload) => {
   } catch (err) {
     return { ok: false, error: String(err) }
   }
+})
+
+ipcMain.handle('window:minimize', () => {
+  const win = BrowserWindow.getFocusedWindow() ?? mainWindow
+  if (win) win.minimize()
+  return true
+})
+
+ipcMain.handle('window:maximize', () => {
+  const win = BrowserWindow.getFocusedWindow() ?? mainWindow
+  if (!win) return false
+  if (win.isMaximized()) win.unmaximize()
+  else win.maximize()
+  return win.isMaximized()
+})
+
+ipcMain.handle('window:close', () => {
+  const win = BrowserWindow.getFocusedWindow() ?? mainWindow
+  if (win) win.close()
+  return true
 })
 
 
