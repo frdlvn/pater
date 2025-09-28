@@ -40,4 +40,3 @@ jobs:
         with:
           name: pater-windows-dist
           path: dist/**
-

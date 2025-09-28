@@ -1,10 +1,10 @@
 Pater (Electron + LangGraph POC)
 
-Proof-of-concept Electron app using `@langchain/langgraph` to run a minimal agent that triggers a native Windows toast via `electron-windows-notifications`.
+Proof-of-concept Electron app using `@langchain/langgraph` to run a minimal agent that triggers a native toast via Electron's `Notification` API.
 
 Requirements
 - Node.js 18+
-- Windows 10/11 for native toasts (on non-Windows, toast calls are no-ops)
+- Desktop OS with notification support (Windows 10/11, macOS, many Linux DEs)
 
 Install
 ```bash
@@ -26,8 +26,8 @@ Structure
 - `src/agent.js`: Minimal LangGraph StateGraph that maps input to `{ title, body }`
 
 Notes
-- On non-Windows platforms or if notifications are disabled, `electron-windows-notifications` exports no-ops.
-- AppUserModelID is set to `com.pater.app` and required for Windows toasts.
+- On platforms where notifications are disabled or unsupported, calls will return an error state.
+- AppUserModelID is set to `com.pater.app` and enables Windows toast integration.
 
 Tests
 Basic agent unit test can be added with Vitest (placeholder script configured).
